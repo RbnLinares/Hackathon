@@ -32,10 +32,11 @@ def suggest_resources(level):
         'high': ['Resource 5', 'Resource 6']
     }
 
-    import sqlite3
+    import psycopg2
+    # import config
 
 def create_database():
-    conn = sqlite3.connect('resources.db')
+    conn = psycopg2.connect('resources.db')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS resources
                  (level text, resource text)''')
@@ -43,14 +44,14 @@ def create_database():
     conn.close()
 
 def add_resource(level, resource):
-    conn = sqlite3.connect('resources.db')
+    conn = psycopg2.connect('resources.db')
     c = conn.cursor()
     c.execute("INSERT INTO resources VALUES (?, ?)", (level, resource))
     conn.commit()
     conn.close()
 
 def get_resources(level):
-    conn = sqlite3.connect('resources.db')
+    conn = psycopg2.connect('resources.db')
     c = conn.cursor()
     c.execute("SELECT resource FROM resources WHERE level=?", (level,))
     resources = [row[0] for row in c.fetchall()]
