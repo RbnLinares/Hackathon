@@ -63,3 +63,20 @@ def get_resources(conn):
 # print(resources)
 
 # conn.close()
+
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route('/resources/<int:level>')
+def get_resources(level):
+    # Example resources based on analysis level
+    resources = {
+        1: ["Resource 1", "Resource 2"],
+        2: ["Resource 3", "Resource 4", "Resource 5"],
+        3: ["Resource 6", "Resource 7", "Resource 8", "Resource 9"]
+    }
+    return jsonify(resources.get(level, []))
+
+if __name__ == '__main__':
+    app.run(debug=True)
