@@ -1,20 +1,37 @@
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 
 def scrape_page(url):
     response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    return soup.get_text()
+    if response.ok:
+        soup = BeautifulSoup(response.text, 'html.parser')
+        return soup
+    return None
 
-def detect_not_ok(text):
-    return 'not ok' in text.lower()
+def detect_not_ok_texts(soup):
+    not_ok_texts = []
+    # Assuming 'not ok' texts are in paragraph tags with a specific class
+    for p in soup.find_all('p', class_='not-ok-text'):
+        not_ok_texts.append(p.text)
+    return not_ok_texts
 
-# Example usage
-ok_page_text = scrape_page('file:///path/to/ok_page.html')
-not_ok_page_text = scrape_page('file:///path/to/not_ok_page.html')
+def analyze_texts(not_ok_texts):
+    # Placeholder for text analysis logic
+    # This could involve natural language processing (NLP) to determine the level of the text
+    # For simplicity, let's assume a basic level analysis
+    levels = ['low', 'medium', 'high']
+    return levels[len(not_ok_texts) % len(levels)] # Example logic
 
-print(detect_not_ok(ok_page_text)) # False
-print(detect_not_ok(not_ok_page_text)) # True
+def suggest_resources(level):
+    # Placeholder for fetching resources from a database
+    # This could involve querying a database based on the level of the detected text
+    # For simplicity, let's return a static list of resources
+    resources = {
+        'low': ['Resource 1', 'Resource 2'],
+        'medium': ['Resource 3', 'Resource 4'],
+        'high': ['Resource 5', 'Resource 6']
+    }
+    return resources[level]
 
 import psycopg2
 
@@ -55,28 +72,16 @@ def get_resources(conn):
     cursor.close()
     return resources
 
-# Example usage
-# conn = create_database_connection()
-# create_resources_table(conn)
-# insert_resource(conn, "Antisemitism Education Resource", "https://example.com/resource")
-# resources = get_resources(conn)
-# print(resources)
+def main():
+    url = 'http://example.com/fake-page'
+    soup = scrape_page(url)
+    if soup:
+        not_ok_texts = detect_not_ok_texts(soup)
+        level = analyze_texts(not_ok_texts)
+        resources = suggest_resources(level)
+        print(f"Suggested resources for level '{level}': {resources}")
 
-# conn.close()
+if __name__ == "__main__":
+    main()
 
-from flask import Flask, jsonify
 
-app = Flask(__name__)
-
-@app.route('/resources/<int:level>')
-def get_resources(level):
-    # Example resources based on analysis level
-    resources = {
-        1: ["Resource 1", "Resource 2"],
-        2: ["Resource 3", "Resource 4", "Resource 5"],
-        3: ["Resource 6", "Resource 7", "Resource 8", "Resource 9"]
-    }
-    return jsonify(resources.get(level, []))
-
-if __name__ == '__main__':
-    app.run(debug=True)
