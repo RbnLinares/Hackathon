@@ -34,7 +34,7 @@ def connect_to_database():
     )
     return conn
 
-def buscar_recursos_educativos(query):
+def educative_resource(query):
     url = "https://www.google.com/search"
     params = {
         "q": query,
@@ -45,7 +45,7 @@ def buscar_recursos_educativos(query):
         soup = BeautifulSoup(response.text, 'html.parser')
         for link in soup.find_all('a'):
             href = link.get('href')
-            if href and "educational" in href: # Esto es solo un ejemplo, necesitarás una lógica más sofisticada
+            if href and "educational" in href: #"https://www.education.com/educational-resources"
                 print(f"Recurso educativo sugerido: {href}")
     else:
         print(f"Error al buscar recursos educativos: {response.status_code}")
@@ -60,7 +60,7 @@ def store_articles_in_database(news_results, api_key):
             article_response = requests.get(article['url'])
             article_response.raise_for_status() 
             if article_response.ok:
-                # print(article_response.ok)
+                print(article_response.ok)
                 soup = BeautifulSoup(article_response.text, 'html.parser')
                 content = soup.get_text()
                 sentiment = analyze_sentiment(article_response.text)
