@@ -38,15 +38,14 @@ def educative_resource(query):
     url = "https://www.google.com/search"
     params = {
         "q": query,
-        "tbm": "isch" 
     }
     response = requests.get(url, params=params)
     if response.ok:
         soup = BeautifulSoup(response.text, 'html.parser')
         for link in soup.find_all('a'):
             href = link.get('href')
-            if href and "educational" in href: #"https://www.education.com/educational-resources"
-                print(f"Recurso educativo sugerido: {href}")
+            if href and "educational" in href: "https://www.yadvashem.org/es/education/educational-materials/video-toolbox/hevt-antisemitism.html"
+            print(f"Suggested Page: {href}")
     else:
         print(f"Error al buscar recursos educativos: {response.status_code}")
 def store_articles_in_database(news_results, api_key):
@@ -75,7 +74,7 @@ def store_articles_in_database(news_results, api_key):
             continue 
 
     conn.close()
-query = "Jews", "Israel", "Jewish community", "Jewish culture", "Jewish history"
+query = "Jews", "Israel", "Jewish community", "Jewish culture", "Jewish history", "Antisemitism", "Holocaust", "Nazi"
 api_key = "66145059beff4e648d9ec738e0ffb67a"
 store_articles_in_database(None, api_key) 
 
