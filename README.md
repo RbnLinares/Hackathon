@@ -12,4 +12,7 @@ main code algorythm:
 >   manual method: suggest us to read files ourselves and decided to put them into database or not  
 > if the files considered 'not ok' we put them into our database (the urls from github) along with bad phrazes that we found.  
 > In our resources database we have like pairs 'speical bad words' = resource1 , 'other bad words' = resource2  
-> resources1,2,3,etc are just links to pro-israeli contents like e.g. laws, organizations, etc.   
+> resources1,2,3,etc are just links to pro-israeli contents like e.g. laws, organizations, etc.  
+> We compare one database to another to provide a list of appropriate resources, it's easy like if one db bad words = another db bad words,  
+> then we provide another db defined resources (like from the same row in the db table)
+> That's the task
